@@ -1,11 +1,12 @@
 // Inside ApplicationDbContext.cs
 
-using Microsoft.EntityFrameworkCore;
 using LabWebApp.Models;
-public class ApplicationDbContext : DbContext
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
+public class ApplicationDbContext : IdentityDbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
     }
 
@@ -13,6 +14,7 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
         // Seed data for the Product entity
         modelBuilder.Entity<Product>().HasData(
             new Product { Id = 1, Name = "Product 1", Price = 19.99m, Description = "Description for Product 1" },

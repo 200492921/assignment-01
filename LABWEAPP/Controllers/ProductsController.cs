@@ -1,9 +1,8 @@
 // Inside Controllers/ProductsController.cs
 
-using Microsoft.AspNetCore.Mvc;
 using LabWebApp.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
 
 public class ProductsController : Controller
 {
@@ -15,28 +14,22 @@ public class ProductsController : Controller
     }
 
     // GET: Products
-   public async Task<IActionResult> Index()
-{
-    var products = await _context.Products.ToListAsync();
-    return View(products);
-}
+    public async Task<IActionResult> Index()
+    {
+        var products = await _context.Products.ToListAsync();
+        return View(products);
+    }
 
 
     // GET: Products/Details/5
     public async Task<IActionResult> Details(int? id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
+        if (id == null) return NotFound();
 
         var product = await _context.Products
             .FirstOrDefaultAsync(m => m.Id == id);
 
-        if (product == null)
-        {
-            return NotFound();
-        }
+        if (product == null) return NotFound();
 
         return View(product);
     }
@@ -58,23 +51,18 @@ public class ProductsController : Controller
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
         return View(product);
     }
 
     // GET: Products/Edit/5
     public async Task<IActionResult> Edit(int? id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
+        if (id == null) return NotFound();
 
         var product = await _context.Products.FindAsync(id);
 
-        if (product == null)
-        {
-            return NotFound();
-        }
+        if (product == null) return NotFound();
 
         return View(product);
     }
@@ -84,10 +72,7 @@ public class ProductsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Description")] Product product)
     {
-        if (id != product.Id)
-        {
-            return NotFound();
-        }
+        if (id != product.Id) return NotFound();
 
         if (ModelState.IsValid)
         {
@@ -100,40 +85,32 @@ public class ProductsController : Controller
             catch (DbUpdateConcurrencyException)
             {
                 if (!ProductExists(product.Id))
-                {
                     return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
+
             return RedirectToAction(nameof(Index));
         }
+
         return View(product);
     }
 
     // GET: Products/Delete/5
     public async Task<IActionResult> Delete(int? id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
+        if (id == null) return NotFound();
 
         var product = await _context.Products
             .FirstOrDefaultAsync(m => m.Id == id);
 
-        if (product == null)
-        {
-            return NotFound();
-        }
+        if (product == null) return NotFound();
 
         return View(product);
     }
 
     // POST: Products/Delete/5
-    [HttpPost, ActionName("Delete")]
+    [HttpPost]
+    [ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
